@@ -49,7 +49,9 @@ $ nest g s nama service (otomatis generate service)
 
 Setelah kita membuat fungsi/logic di service contoh:
 
-**getLatihan()**, maka kita buat juga **getLatihan** di **Controller** nya (dengan catatan disini si service yang bakal nge return).
+"**getLatihan()**"
+
+Maka kita buat juga **getLatihan** di **Controller** nya (dengan catatan disini si service yang bakal nge return).
 
 ## Service Provider
 
