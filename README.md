@@ -47,7 +47,7 @@ $ nest g s nama service (otomatis generate service)
 
 ```
 
-Setelah kita membuat fungsi/logic di service contoh:
+Setelah kita membuat fungsi/logic di service, kita **Inject Service** nya ke Controller, contoh :
 
 "**getLatihan()**"
 
