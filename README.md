@@ -59,6 +59,44 @@ Service provider digunakan agar class yang dimasukan dalam service provifes bisa
 
 Service provider berfungsi untuk menampung service-service atau class-class supaya bisa digunakan menggunakan Dependency Injection.
 
+## Create API
+
+Kita bisa tambahkan Fungsi Create pada Service dan Controller dengan method POST, lalu panggil dari controller:
+
+**task.service.ts**
+```
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class TaskService {
+    async createTask(){
+        return 'Membuat Tugas baru dari Ayana';
+    }
+}
+```
+
+Kita pakai fitur async di atas.
+
+**ts.controller.ts**
+```
+import { Controller, Post } from '@nestjs/common';
+import { TaskService } from './task.service';
+
+@Controller('task')
+export class TaskController {
+    // pertama di panggil constructor nya
+    constructor(private taskService: TaskService){}
+
+    @Post()
+    async createTask(){
+        return await this.taskService.createTask;
+    }
+}
+
+```
+
+Kita pakai method asyn dan await di atas.
+
 ## Running the app
 
 ```bash
