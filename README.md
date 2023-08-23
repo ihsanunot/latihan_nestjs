@@ -84,7 +84,7 @@ import { TaskService } from './task.service';
 
 @Controller('task')
 export class TaskController {
-    // pertama di panggil constructor nya
+
     constructor(private taskService: TaskService){}
 
     @Post()
@@ -95,7 +95,7 @@ export class TaskController {
 
 ```
 
-Kita pakai method asyn dan await di atas.
+Kita pakai method asyn dan await di atas, lalu pakai Decorator **@Post()**, lalu bisa di test di Postman untuk method POST nya.
 
 ## Running the app
 
