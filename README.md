@@ -1,212 +1,72 @@
-# Belajar DTO (Data Transfer Object)
+# Belajar Prisma + NestJS
 
-DTO di dalam Nest JS adalah berupa Class yang berisi type data yang bisa digunakan sebagai **INTERFACE** atau object dari data yang dikirim oleh client.
+Prisma adalah Modern ORM based on Typescript.
 
-Implementasi nya penggunaan DTO adalah  di dalam Controller.
+- Saat pembuatan prisma, kita wajib membuat Skema
+- Tidak ada Pembuatan Model di dalam Prisma
 
-Pertama, buat **Body** di dalam controller <= implement dari createTask DTO.
+Tapi nanti Model nya itu generate otomatis dari pembuatan Skema.
 
-Kedua, buat di dalam **Service** nama harus sama dengan di controller.
-
-Ketiga buat folder DTO, lalu bikin file dengan nama :
-
-"create-task.dto.ts"
-
-Keempat, export class DTO bikin attribute nya, lalu import ke dalam **Controller**.
-
-Kelima bikin @Body body:CreateTaskDTO, dan si body nya ini masukan sebagai parameter di dalam createTask Function yang ada di dalam service.
-
-```
-return await this.taskService.createTask(body);
-```
-
-Keenam, hasil error karena kita belum menambahkan parameter nya di dalam service, maka kita buat parameter nya di dalam service.
-
-```
-async createTask(data:CreateTaskDTO){...}
-```
-Notes : CreateTaskDTO adalah implement nya.
-
-
-Ketujuh, coba testing menampilkan data yang dikirim dari sisi client 
-
-```
-export class TaskService {
-    async createTask(data:CreateTaskDTO){
-        return data.task_name; // karena pakai DTO
-    }
-}
-```
-
-Lalu tinggal coba test di postman.
-
-Testing :
-
-Method : Post
-
-http://localhost:3000/task
-
-Body(JSON) :
-
-```
-{
-  "task_name": "Testing DTO",
-  "task_description" : "Lagi Belajar DTO Nest JS  "
-}
-```
-
-Sesuai dari data create-tast.dto.ts di dalam folder dto.
-
-Kesembilan, di service kita coba men-return sebagai JSON.
-
-```
-    async createTask(data:CreateTaskDTO){
-        return {
-            statusCode: 200,
-            data,
-        };
-    }
-
-```
-
-Terus test lagi di Postman.
-
-Intinya DTO adalah data yang di kirim ke sisi server.
+Jadi ketika kita buat skema itu udah otomatis jadi model dan bisa langsung dipanggil.
 
 ---
 
-### Buat Mockup Data untuk GetAllData
-
-Untuk getAllTask() kita coba pakai Mockup data
-
-Bikin folder baru di dalam folder task dengan nama data, lalu bikin tasks.ts
-
-didalamnya akan berisi mockup untuk sementara data nya, 
-
-Contoh :
+## Setup Prisma
 
 ```
-// bikin mockup data
-
-export interface Task{
-    task_id: number;
-    task_name: string;
-    task_description: string;
-}
-
-export const tasks:Task[] = [
-    {
-        task_id: 1,
-        task_name: 'Task 1',
-        task_description: 'Task 1 Deskripsi dari Ayana'
-    },
-        {
-        task_id: 2,
-        task_name: 'Task 2',
-        task_description: 'Task 2 Deskripsi dari Mona'
-    },
-        {
-        task_id: 3,
-        task_name: 'Task 3',
-        task_description: 'Task 3 Deskripsi dari Neno'
-    },
-];
+yarn add prisma --dev
 ```
 
-Baru kita tambahkan ke getAllTask yang ada di task.service
+setelah itu :
 
 ```
-    async getAllTask(){
-        return {
-            statusCode: 200,
-            data: tasks
-        }
-    }
+yarn prisma init
 ```
 
-Lalu di hit lagi ke postman.
 
----
+**Setelah menjalankan perintah diatas, akan terbentuk file baru :**
 
-Get Task By ID
+- .env = berisi configurasi koneksi database
+- prisma/schema.prisma = file untuk membuat skema
 
-Ambil data task berdasarkan ID Task, kita buat di service fungsi untuk getTaskById nya.
+Tapi default nya datasource nya adalah postgre, disini kita akan ganti memakai MySQL bisa coba pakai planetscale.com
 
-```
-    async getTaskById(task_id:number){
-        return {
-            statusCode: 200,
-                                    // panggil si task_id
-            data: tasks.find((task)=> task.task_id == task_id)
-        }  
-    }
-// sesuai sama data mockup task_id
+Planetscale sendiri adalah MySQL versi Cloud Serverless dan juga Versi Gratisan.
+Lalu tinggal daftar saja terus connect database -> prisma
 
-```
+Nanti ada tab pilih yang prisma
 
-Lalu kita panggil di Controller.
+Terus nanti muncul kode untuk di .env sama untuk di prisma.schema nya.
+Kita langsung copy paste saja .env
 
-```
-    @Get('/:task_id')
-    async getTaskById(@Param('task_id') task_id){
-        return await this.taskService.getTaskById(task_id);
-    }
-```
+Terus gita ganti di schema.prisma di bagian provider nya menjadi mysql.
+Nah, sekarang kita tinggal testing apakah database nya sudah tersambung dengan project kita atau belum.
 
-Lalu tinggal hit aja di Postman, misalkan mau hit Id yg nomor 1 tinggal method GET lalu http://localhost:3000/task/1 lalu Send.
-
----
-
-### Membuat Update API
-
-Membuat Fungsi Update untuk merubah task berdasarkan ID.
-
-Untuk membuat nya mirip mirip hanya penamaan nya saja dan di poles sedikit.
-
-nama nya jadi updateTaskId di task.service, lalu di task.controller nya di parameter nya kita membuat DTO lagi.
+Kita coba pakai Aplikasi **"DBeaver"**.
 
 
-Kita membuat DTO di folder DTO, kita bisa save as atau copy menjadi update-task.id.ts & jangan lupa untuk mengganti sedikit nama class nya.
+Nah disini nanti kita bisa cek di .env nya
 
-Berhubung atribute nya isi nya sama yang di update-task dengan yang create-task, jadi kita buat Parameter nya sama.
+* localhost yg setelah @ seperti :
+aws.connect.psdb.cloud
+
+* lalu di .env yang awal itu username (contoh):
+lvpey866tso2u6f0p7az
+
+* Password nya ada di : setelah nama username :
+pscale_pw_tOmDETBGbprHzKr7wh1JXxnfnaurrltqIvJcRUMsOuC
+
+atau bisa cek di prisma nya untuk username dan password
+terus kita connect ke database pakai dbeaver.
+
+Jika disuruh download driver, download saja, nanti baru ke connect dan double klik kita bisa cek database nya.
 
 
-Kemudian dari controller kita buat fungsi yang sama, tapi Method nya adalah @Patch biasa nya ada PUT (mengganti semua data) dan Patch (mengganti sebagian data) lalu endpoint nya juga saya samakan di ('/:task_id').
+**Kalau berhasil connect ada pesan:**
 
+Connected (1000ms)
+Server : MySql
+Driver : Mysql Connector
 
-Jangan lupa bikin di task.service nya seperti ini (sama dengan yang diatas cuma beda di data saja):
-
-```
-    async updateTaskById(task_id:number, data:UpdateTaskDTO){
-            return {
-            statusCode: 200,
-                // disini karena belum ada database, maka saya isi data:data dulu saja.
-            data: data,
-        }   
-    }
-```
-
-Lalu kita bisa Hit lagi ke Postman, lalu method patch ke ​http://localhost:3000/task/1 
-jika isi nya kosong, itu karena kita belum mengisi data untuk di update nya.
-
-Jadi bisa coba update data body di json postman sesuai task_name atau yang lain nya yang ada di atribut DTO untuk sisi Client.
-
-contoh :
-
-```
-PATCH - > ​http://localhost:3000/task/1 -> Body -> JSON -> isi seperti ini :
-
-{
-  "task_name" : "Vega Rismawati",
-  "task_description" : "Seorang Gitaris"
-}
-
-```
-
-Lalu Send dan lihat hasilnya.
-
----
-
-### Delete Task
-
-Ada 1 endpoint lagi yaitu Delete data beserta ID yang dikirim oleh Clent.
+*Catatan:*
+DBeaver nya jika bisa pakai yang terbaru agar tidak terjadi bug, saya pakai yang lama error mulu karena ada bug.
