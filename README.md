@@ -70,3 +70,69 @@ Driver : Mysql Connector
 
 *Catatan:*
 DBeaver nya jika bisa pakai yang terbaru agar tidak terjadi bug, saya pakai yang lama error mulu karena ada bug.
+
+---
+
+## Membuat Skema Task Management
+
+Buat skema task di dalam prisma.schema
+
+```
+model tasks {
+  id                  Int         @id @default(autoincrement())
+  task_name           String 
+  task_description    String      @db.Text
+  created_at          DateTime    @default(now())
+}
+
+```
+
+diatas kita buat attribute prisma, ada 4 column diatas yang nanti nya akan jadi query nya (id,task_name,task_description,created_at),
+Attribute itu nanti otomatis menjadi Column ke dalam Database.
+
+```
+  id                  Int         @id @default(autoincrement())
+```
+
+annotasi @id berarti itu otomatis menjadi Primary key yang di dalam table task.
+
+```
+  task_name           String 
+```
+kode di atas akan Otomatis menjadi VARCHAR
+
+```
+  task_description    String      @db.Text
+```
+
+kode diatas membuat text di dalam table
+
+```
+created_at          DateTime    @default(now())
+```
+now() adalah default nya.
+
+**Kemudian kita generate Skema menggunakan CLI :**
+
+```
+yarn prisma generate
+```
+
+atau bisa juga pakai :
+
+```
+npx "prisma generate"
+```
+
+Jangan lupa untuk instal :
+
+```
+yarn add @prisma/client
+```
+
+Tujuan nya agar si Prisma akan membuatkan Class - Class Model yang nanti kita gunakan.
+
+Jika sukses maka schema.prisma nya akan ter-generate otomatis.
+
+---
+
