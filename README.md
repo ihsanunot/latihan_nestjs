@@ -61,6 +61,16 @@ terus kita connect ke database pakai dbeaver.
 
 Jika disuruh download driver, download saja, nanti baru ke connect dan double klik kita bisa cek database nya.
 
+Lalu test connection, kalau gagal biasa nya karena ssl nya
+
+Jadi bisa diganti di DBeaver nya menjadi :
+
+```
+useSSL : TRUE
+```
+
+TRUE nya wajib huruf besar dan silakan coba test connection lagi.
+
 
 **Kalau berhasil connect ada pesan:**
 
@@ -136,3 +146,30 @@ Jika sukses maka schema.prisma nya akan ter-generate otomatis.
 
 ---
 
+## Migration
+
+Kita akan membuat migration dari skema yang kita buat agar menjadi table yang ada di MySQL Database.
+
+Setelah membuat skema, selanjutnya adalah migrate dari schema menjadi table ke dalam database dengan perintah:
+
+```
+yarn prisma db push
+```
+
+Jika sudah, kita check apa sudah ter-update atau belum, jika berhasil maka akan terbentuk table baru di sini table baru nya adalah table tasks.
+
+Jika berhasil :
+
+```
+Your database is now in sync with your Prisma schema. Done in 2.37s
+
+✔ Generated Prisma Client (v5.2.0) to .\node_modules\@prisma\client in 283ms
+```
+
+Langkah selanjutnya adalah instal Prisma Client
+
+```
+yarn add @prisma/client
+```
+
+Tunggu hingga proses instalasi nya selesai.
